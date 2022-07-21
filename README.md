@@ -18,14 +18,16 @@ multiple scene text recognition benchmarks.
 
 - SemiMTR vision model pretraining: Contrastive learning
   ![SemiMTR Vision Model Pretraining](figures/semimtr_vision_pretraining.svg)
-  <br/><br/>
+  <br/><br/><br/><br/>
 
 - SemiMTR model fine-tuning: Consistency regularization
   ![SemiMTR Fine-Tuning](figures/semimtr_cosistency_regularization.svg)
-  <br/><br/>
+  <br/><br/><br/><br/>
 
 - SemiMTR model architecture: ABINet Model
   ![Model Architecture](figures/abinet_model_architecture.svg)
+
+# Getting Started
 
 <h2 id="demo"> 
     Run Demo with Pretrained Model 
@@ -34,8 +36,6 @@ multiple scene text recognition benchmarks.
     <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
     </a> 
 </h2>
-
-# Getting Started
 
 ## Dependencies
 
