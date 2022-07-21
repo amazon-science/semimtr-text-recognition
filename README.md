@@ -1,7 +1,7 @@
 # Multimodal Semi-Supervised Learning for Text Recognition
 
 The official code implementation of SemiMTR [Paper](https://arxiv.org/pdf/2205.03873)
-| [Pretrained Models](#Pretrained-Models) | [Demo](#demo).
+| [Pretrained Models](#Pretrained-Models) | [Citation](#citation) | [Demo](#demo).
 
 **[Aviad Aberdam](https://sites.google.com/view/aviad-aberdam/home),
 [Roy Ganz](https://il.linkedin.com/in/roy-ganz-270592),
@@ -16,16 +16,23 @@ multiple scene text recognition benchmarks.
 
 ### Figures
 
-- SemiMTR vision model pretraining: Contrastive learning
-  ![SemiMTR Vision Model Pretraining](figures/semimtr_vision_pretraining.svg)
-  <br/><br/><br/><br/>
+<figure>
+  <p align="center"><img src="figures/semimtr_vision_pretraining.svg" alt="semimtr vision model pretraining" width="512" /></p>
+  <figcaption><p align="center"><b>Figure 1:</b> SemiMTR vision model pretraining: Contrastive learning </p></figcaption>
+</figure>
+<br/><br/>
 
-- SemiMTR model fine-tuning: Consistency regularization
-  ![SemiMTR Fine-Tuning](figures/semimtr_cosistency_regularization.svg)
-  <br/><br/><br/><br/>
+<figure>
+  <p align="center"><img src="figures/semimtr_cosistency_regularization.svg" alt="semimtr fine-tuning" width="512" /></p>
+  <figcaption><p align="center"><b>Figure 2:</b> SemiMTR model fine-tuning: Consistency regularization </p></figcaption>
+</figure>
 
-- SemiMTR model architecture: ABINet Model
-  ![Model Architecture](figures/abinet_model_architecture.svg)
+<!-- <br/><br/>
+<figure>
+  <p align="center"><img src="figures/abinet_model_architecture.svg" alt="semimtr model architecture" width="512" /></p>
+  <figcaption><p align="center"><b> SemiMTR model architecture: ABINet Model </b></p></figcaption>
+</figure> -->
+  
 
 # Getting Started
 
@@ -61,6 +68,16 @@ Pretrained vision models:
 Pretrained language model:
 
 - [ABINet Language Model](https://awscv-public-data.s3.us-west-2.amazonaws.com/semimtr/abinet_language_model.pth)
+
+### SemiMTR Models Accuracy
+
+|Training Data|IIIT|SVT|IC13|IC15|SVTP|CUTE|Avg.|COCO|RCTW|Uber|ArT|LSVT|MLT19|ReCTS|Avg.|
+|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+|Synth (ABINet)|96.4|93.2|95.1|82.1|89.0|89.2|91.2|63.1|59.7|39.6|68.3|59.5|85.0|86.7|52.0|
+|Real-L+U|97.0|95.8|96.1|84.7|90.7|94.1|92.8|72.2|76.1|58.5|71.6|77.1|90.4|92.4|65.4|
+|Real-L+U+Synth|97.3|96.6|97.0|84.7|93.0|93.8|93.3|72.7|76.3|58.4|72.3|77.1|90.2|93.2|65.6|
+|Real-L+U+TextOCR|97.3|97.7|96.9|86.0|92.2|94.4|93.7|73.8|77.7|58.6|73.5|78.3|91.3|93.3|66.1|
+
 
 ## Datasets
 
