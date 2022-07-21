@@ -10,6 +10,7 @@ import torch
 import torch.nn.functional as F
 import tqdm
 from semimtr.utils.utils import Config, Logger, CharsetMapper
+from semimtr.callbacks.callbacks import TextAccuracy
 from torchvision import transforms
 
 
@@ -32,11 +33,15 @@ def preprocess(img, width, height):
     return (img - mean[..., None, None]) / std[..., None, None]
 
 
-def postprocess(output, charset, model_eval):
+def postprocess(raw_output, charset, model_eval):
     def _get_output(last_output, model_eval):
-        if isinstance(last_output, (tuple, list)):
-            for res in last_output:
-                if res['name'] == model_eval: output = res
+        output_list = TextAccuracy._extract_output_list(last_output)
+        if output_list is not None:
+            if isinstance(output_list, (tuple, list)):
+                for res in output_list:
+                    if res['name'] == model_eval: output = res
+            else:
+                output = output_list
         else:
             output = last_output
         return output
@@ -53,7 +58,7 @@ def postprocess(output, charset, model_eval):
             pt_lengths.append(min(len(text) + 1, charset.max_length))  # one for end-token
         return pt_text, pt_scores, pt_lengths
 
-    output = _get_output(output, model_eval)
+    output = _get_output(raw_output, model_eval)
     logits, pt_lengths = output['logits'], output['pt_lengths']
     pt_text, pt_scores, pt_lengths_ = _decode(logits)
 
@@ -79,7 +84,8 @@ def main():
                         help='path to config file')
     parser.add_argument('--input', type=str, default='figs/test')
     parser.add_argument('--cuda', type=int, default=-1)
-    parser.add_argument('--checkpoint', type=str, default='workdir/consistency-regularization/best-consistency-regularization.pth')
+    parser.add_argument('--checkpoint', type=str,
+                        default='workdir/consistency-regularization/best-consistency-regularization.pth')
     parser.add_argument('--model_eval', type=str, default='alignment',
                         choices=['alignment', 'vision', 'language'])
     args = parser.parse_args()
@@ -105,19 +111,21 @@ def main():
     else:
         paths = glob.glob(os.path.expanduser(args.input))
         assert paths, "The input path(s) was not found"
-    pt_outputs = []
+    pt_outputs = {}
     paths = sorted(paths)
     for path in tqdm.tqdm(paths):
         img = PIL.Image.open(path).convert('RGB')
         img = preprocess(img, config.dataset_image_width, config.dataset_image_height)
         img = img.to(device)
-        res = model(img)
+        res = model(img, forward_only_teacher=True)
         pt_text, _, __ = postprocess(res, charset, config.model_eval)
-        pt_outputs.append(pt_text[0])
-        logging.info(f'{path}: {pt_text[0]}')
-
+        pt_outputs[path] = pt_text[0]
+        logging.info(f'SemiMTR Prediction of the path: {path} is: {pt_text[0]}')
     return pt_outputs
 
 
 if __name__ == '__main__':
-    main()
+    pt_outputs = main()
+    logging.info('Finished!')
+    for k, v in pt_outputs.items():
+        print(k, v)

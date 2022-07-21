@@ -56,7 +56,7 @@ optimizer:
   }
 
 model:
-  name: 'semimtr.modules.model_fusion_teacher_student.TeacherStudentFusionModel'
+  name: 'semimtr.modules.model_fusion_consistency_regularization.ConsistencyRegularizationFusionModel'
   iter_size: 3
   vision: {
     checkpoint: workdir/seqclr-pretrain-vision-model/best-seqclr-pretrain-vision-model.pth,
