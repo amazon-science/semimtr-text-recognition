@@ -29,13 +29,13 @@ multiple scene text recognition benchmarks.
 
 # Getting Started
 
-<b id="demo"> 
-    Run Demo with Pretrained Model: 
+<h3 id="demo"> 
+    Run Demo with Pretrained Model 
     <a 
     href="https://colab.research.google.com/github/amazon-research/semimtr-text-recognition/blob/master/notebook_demo.ipynb" target="_parent">
     <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
     </a> 
-</b>
+</h3>
 
 ## Dependencies
 
