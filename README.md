@@ -176,14 +176,6 @@ CUDA_VISIBLE_DEVICES=0 python main.py --config configs/semimtr_finetune.yaml --r
 - `--test_root /path/to/dataset` set the path of evaluation dataset
 - `--model_eval [alignment|vision]` which sub-model to evaluate
 
-## Acknowledgements
-
-This implementation has been based on the repository [ABINet](https://github.com/FangShancheng/ABINet).
-
-## Contact
-
-Feel free to contact us if there is any question: [Aviad Aberdam](mailto:aaberdam@amazon.com?subject=[GitHub-SemiMTR])
-
 ## Citation
 
 If you find our method useful for your research, please cite
@@ -205,6 +197,10 @@ If you find our method useful for your research, please cite
 }
  ```
 
+## Acknowledgements
+
+This implementation has been based on the repository [ABINet](https://github.com/FangShancheng/ABINet).
+
 ## Security
 
 See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
@@ -212,3 +208,7 @@ See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more inform
 ## License
 
 This project is licensed under the Apache-2.0 License.
+
+## Contact
+
+Feel free to contact us if there is any question: [Aviad Aberdam](mailto:aaberdam@amazon.com?subject=[GitHub-SemiMTR])
