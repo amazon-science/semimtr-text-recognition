@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from fastai.vision import *
 
-from SemiMTR.modules.model import Model, _default_tfmer_cfg
+from semimtr.modules.model import Model, _default_tfmer_cfg
 
 
 class BaseAlignment(Model):

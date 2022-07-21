@@ -9,7 +9,7 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 import tqdm
-from SemiMTR.utils.utils import Config, Logger, CharsetMapper
+from semimtr.utils.utils import Config, Logger, CharsetMapper
 from torchvision import transforms
 
 

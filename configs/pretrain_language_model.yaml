@@ -41,7 +41,7 @@ optimizer:
   }
 
 model:
-  name: 'SemiMTR.modules.model_language.BCNLanguage'
+  name: 'semimtr.modules.model_language.BCNLanguage'
   language: {
     num_layers: 4,
     loss_weight: 1.,

@@ -51,7 +51,7 @@ optimizer:
   }
 
 model:
-  name: 'SemiMTR.modules.model_vision.BaseVision'
+  name: 'semimtr.modules.model_vision.BaseVision'
   checkpoint: ~
   vision: {
     loss_weight: 1.,

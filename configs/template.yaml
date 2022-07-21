@@ -70,6 +70,6 @@ optimizer:
   }
 
 model:
-  name: 'SemiMTR.modules.model_abinet.ABINetModel'
+  name: 'semimtr.modules.model_abinet.ABINetModel'
   checkpoint: ~
   strict: True

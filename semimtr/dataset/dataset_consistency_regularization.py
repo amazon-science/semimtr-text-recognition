@@ -2,9 +2,9 @@ import numpy as np
 import torch
 from torchvision import transforms
 
-from SemiMTR.utils.transforms import ImageToPIL, ImageToArray
-from SemiMTR.dataset.dataset import ImageDataset
-from SemiMTR.dataset.augmentation_pipelines import get_augmentation_pipeline
+from semimtr.utils.transforms import ImageToPIL, ImageToArray
+from semimtr.dataset.dataset import ImageDataset
+from semimtr.dataset.augmentation_pipelines import get_augmentation_pipeline
 
 
 class ImageDatasetConsistencyRegularization(ImageDataset):

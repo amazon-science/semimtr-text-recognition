@@ -2,10 +2,10 @@ import logging
 import torch.nn as nn
 from fastai.vision import *
 
-from SemiMTR.modules.attention import *
-from SemiMTR.modules.backbone import ResTranformer
-from SemiMTR.modules.model import Model
-from SemiMTR.modules.resnet import resnet45
+from semimtr.modules.attention import *
+from semimtr.modules.backbone import ResTranformer
+from semimtr.modules.model import Model
+from semimtr.modules.resnet import resnet45
 
 
 class BaseVision(Model):

@@ -1,6 +1,6 @@
 from torch.utils.data import ConcatDataset
 from fastai.vision import *
-from SemiMTR.callbacks.callbacks import IterationCallback
+from semimtr.callbacks.callbacks import IterationCallback
 
 
 def test_on_each_ds(learner):

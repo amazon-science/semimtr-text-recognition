@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from SemiMTR.losses.losses import MultiCELosses
+from semimtr.losses.losses import MultiCELosses
 
 
 class SeqCLRLoss(nn.Module):

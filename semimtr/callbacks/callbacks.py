@@ -2,7 +2,7 @@ import logging
 
 import editdistance as ed
 import torchvision.utils as vutils
-from SemiMTR.utils.utils import CharsetMapper, Timer, blend_mask
+from semimtr.utils.utils import CharsetMapper, Timer, blend_mask
 from fastai.callbacks.tensorboard import (LearnerTensorboardWriter)
 from fastai.vision import *
 from torch.nn.parallel import DistributedDataParallel

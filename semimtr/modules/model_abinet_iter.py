@@ -2,9 +2,9 @@ import torch
 import torch.nn as nn
 from fastai.vision import *
 
-from SemiMTR.modules.model_vision import BaseVision
-from SemiMTR.modules.model_language import BCNLanguage
-from SemiMTR.modules.model_alignment import BaseAlignment
+from semimtr.modules.model_vision import BaseVision
+from semimtr.modules.model_language import BCNLanguage
+from semimtr.modules.model_alignment import BaseAlignment
 
 
 class ABINetIterModel(nn.Module):

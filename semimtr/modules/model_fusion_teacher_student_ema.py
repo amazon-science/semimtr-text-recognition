@@ -1,7 +1,7 @@
 from fastai.vision import *
 import torch.nn as nn
 
-from SemiMTR.modules.model_abinet_iter import ABINetIterModel
+from semimtr.modules.model_abinet_iter import ABINetIterModel
 
 
 class TeacherStudentFusionEMA(nn.Module):

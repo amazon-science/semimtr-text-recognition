@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from SemiMTR.losses.losses import MultiCELosses
+from semimtr.losses.losses import MultiCELosses
 
 layer_name_to_output_ind = {'alignment': 0, 'language': 1, 'vision': 2}
 

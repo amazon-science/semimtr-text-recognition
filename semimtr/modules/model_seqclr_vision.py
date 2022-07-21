@@ -1,8 +1,8 @@
 from fastai.vision import *
 
-from SemiMTR.modules.model_vision import BaseVision
-from SemiMTR.modules.model import Model
-from SemiMTR.modules.seqclr_proj import SeqCLRProj
+from semimtr.modules.model_vision import BaseVision
+from semimtr.modules.model import Model
+from semimtr.modules.seqclr_proj import SeqCLRProj
 
 
 class SeqCLRModel(Model):

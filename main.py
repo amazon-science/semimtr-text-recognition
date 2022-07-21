@@ -5,17 +5,17 @@ from torch.backends import cudnn
 from fastai.vision import *
 from fastai.callbacks.general_sched import GeneralScheduler, TrainingPhase
 
-from SemiMTR.callbacks.callbacks import IterationCallback, TextAccuracy, TopKTextAccuracy, EMA
-from SemiMTR.dataset.dataset import ImageDataset, TextDataset, collate_fn_filter_none
-from SemiMTR.dataset.dataset_selfsupervised import ImageDatasetSelfSupervised
-from SemiMTR.dataset.dataset_consistency_regularization import ImageDatasetConsistencyRegularization
-from SemiMTR.dataset.weighted_sampler import WeightedDatasetRandomSampler
-from SemiMTR.losses.losses import MultiCELosses
-from SemiMTR.losses.seqclr_loss import SeqCLRLoss
-from SemiMTR.losses.consistency_regularization_loss import ConsistencyRegularizationLoss
-from SemiMTR.utils.utils import Config, Logger, MyDataParallel, \
+from semimtr.callbacks.callbacks import IterationCallback, TextAccuracy, TopKTextAccuracy, EMA
+from semimtr.dataset.dataset import ImageDataset, TextDataset, collate_fn_filter_none
+from semimtr.dataset.dataset_selfsupervised import ImageDatasetSelfSupervised
+from semimtr.dataset.dataset_consistency_regularization import ImageDatasetConsistencyRegularization
+from semimtr.dataset.weighted_sampler import WeightedDatasetRandomSampler
+from semimtr.losses.losses import MultiCELosses
+from semimtr.losses.seqclr_loss import SeqCLRLoss
+from semimtr.losses.consistency_regularization_loss import ConsistencyRegularizationLoss
+from semimtr.utils.utils import Config, Logger, MyDataParallel, \
     MyConcatDataset
-from SemiMTR.utils.test import test_on_each_ds
+from semimtr.utils.test import test_on_each_ds
 
 
 def _set_random_seed(seed):

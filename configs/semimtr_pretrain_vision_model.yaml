@@ -56,7 +56,7 @@ optimizer:
   }
 
 model:
-  name: 'SemiMTR.modules.model_seqclr_vision.SeqCLRModel'
+  name: 'semimtr.modules.model_seqclr_vision.SeqCLRModel'
   checkpoint: ~
   vision: {
     loss_weight: 1.,

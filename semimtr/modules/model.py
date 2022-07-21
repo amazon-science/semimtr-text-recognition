@@ -3,7 +3,7 @@ import logging
 import torch
 import torch.nn as nn
 
-from SemiMTR.utils.utils import CharsetMapper
+from semimtr.utils.utils import CharsetMapper
 
 _default_tfmer_cfg = dict(d_model=512, nhead=8, d_inner=2048,  # 1024
                           dropout=0.1, activation='relu')

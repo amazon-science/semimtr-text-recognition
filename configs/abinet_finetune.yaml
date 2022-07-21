@@ -51,7 +51,7 @@ optimizer:
   }
 
 model:
-  name: 'SemiMTR.modules.model_abinet_iter.ABINetIterModel'
+  name: 'semimtr.modules.model_abinet_iter.ABINetIterModel'
   iter_size: 3
   ensemble: ''
   use_vision: False

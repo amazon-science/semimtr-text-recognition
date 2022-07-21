@@ -2,9 +2,9 @@ import logging
 import torch.nn as nn
 from fastai.vision import *
 
-from SemiMTR.modules.model import _default_tfmer_cfg
-from SemiMTR.modules.model import Model
-from SemiMTR.modules.transformer import (PositionalEncoding,
+from semimtr.modules.model import _default_tfmer_cfg
+from semimtr.modules.model import Model
+from semimtr.modules.transformer import (PositionalEncoding,
                                          TransformerDecoder,
                                          TransformerDecoderLayer)
 

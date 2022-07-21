@@ -1,6 +1,6 @@
 from fastai.vision import *
 
-from SemiMTR.modules.model_abinet_iter import ABINetIterModel
+from semimtr.modules.model_abinet_iter import ABINetIterModel
 
 
 class ConsistencyRegularizationFusionModel(ABINetIterModel):

@@ -2,8 +2,8 @@ import logging
 import torch.nn as nn
 from fastai.vision import *
 
-from SemiMTR.modules.model import Model, _default_tfmer_cfg
-from SemiMTR.modules.projections import BidirectionalLSTM, AttnLinear
+from semimtr.modules.model import Model, _default_tfmer_cfg
+from semimtr.modules.projections import BidirectionalLSTM, AttnLinear
 
 
 class SeqCLRProj(Model):

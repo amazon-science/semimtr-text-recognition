@@ -8,8 +8,8 @@ from fastai.vision import *
 from torchvision import transforms
 from torch.utils.data.dataloader import default_collate
 
-from SemiMTR.utils.transforms import CVColorJitter, CVDeterioration, CVGeometry
-from SemiMTR.utils.utils import CharsetMapper, onehot
+from semimtr.utils.transforms import CVColorJitter, CVDeterioration, CVGeometry
+from semimtr.utils.utils import CharsetMapper, onehot
 
 
 class ImageDataset(Dataset):
