@@ -1,0 +1,91 @@
+global:
+  name: consistency-regularization
+  phase: train
+  stage: train-semi-supervised
+  workdir: workdir
+  seed: ~
+
+dataset:
+  scheme: consistency_regularization
+  type: ST
+  train: {
+    roots: [
+        'data/STR-Fewer-Labels/training/label/real',
+        'data/STR-Fewer-Labels/training/unlabel',
+    ],
+    batch_size: 232,
+    weights: [ 0.3, 0.7 ]
+  }
+  valid: {
+    roots: [
+        'data/STR-Fewer-Labels/validation',
+    ],
+    batch_size: 232
+  }
+  test: {
+    roots: [
+        'data/STR-Fewer-Labels/evaluation/benchmark',
+        'data/STR-Fewer-Labels/evaluation/addition',
+    ],
+    batch_size: 232
+  }
+  data_aug: True
+  multiscales: False
+  num_workers: 14
+  augmentation_severity: 1
+
+training:
+  epochs: 5
+  show_iters: 50
+  eval_iters: 1000
+  save_iters: 3000
+
+optimizer:
+  type: Adam
+  true_wd: False
+  wd: 0.0001
+  bn_wd: False
+  clip_grad: 20
+  lr: 0.0001
+  args: {
+    betas: !!python/tuple [ 0.9, 0.999 ], # for default Adam
+  }
+  scheduler: {
+    periods: [ 3, 1, 1 ],
+    gamma: 0.1,
+  }
+
+model:
+  name: 'SemiMTR.modules.model_fusion_teacher_student.TeacherStudentFusionModel'
+  iter_size: 3
+  vision: {
+    checkpoint: workdir/seqclr-pretrain-vision-model/best-seqclr-pretrain-vision-model.pth,
+    loss_weight: 1.,
+    attention: 'position',
+    backbone: 'transformer',
+    backbone_ln: 3,
+    checkpoint_submodule: vision,
+  }
+  language: {
+    checkpoint: workdir/pretrain-language-model/pretrain-language-model.pth,
+    num_layers: 4,
+    loss_weight: 1.,
+    detach: True,
+    use_self_attn: False
+  }
+  alignment: {
+    loss_weight: 1.,
+  }
+  consistency: {
+    loss_weight: 1.,
+    supervised_flag: True,
+    all_to_all: True,
+    #    teacher_layer: vision,  # alignment | language | vision (doesn't matter if all_to_all is True)
+    #    student_layer: all,  # all | alignment | language | vision (doesn't matter if all_to_all is True)
+    teacher_one_hot: True,
+    kl_div: False,
+    teacher_stop_gradients: True,
+    use_threshold: False,
+    ema: False,
+    ema_decay: 0.9999
+  }
