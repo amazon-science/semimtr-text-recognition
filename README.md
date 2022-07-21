@@ -1,6 +1,6 @@
 # Multimodal Semi-Supervised Learning for Text Recognition
 
-The official code implementation of [SemiMTR](https://arxiv.org/pdf/2205.03873)
+The official code implementation of SemiMTR [Paper](https://arxiv.org/pdf/2205.03873)
 | [Pretrained Models](#Pretrained-Models) | [Demo](#demo).
 
 **[Aviad Aberdam](https://sites.google.com/view/aviad-aberdam/home),
