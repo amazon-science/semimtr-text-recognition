@@ -23,7 +23,7 @@ multiple scene text recognition benchmarks.
 <br/><br/>
 
 <figure>
-  <p align="center"><img src="figures/semimtr_cosistency_regularization.svg" alt="semimtr fine-tuning" width="512" /></p>
+  <p align="center"><img src="figures/semimtr_consistency_regularization.svg" alt="semimtr fine-tuning" width="512" /></p>
   <figcaption><p align="center"><b>Figure 2:</b> SemiMTR model fine-tuning: Consistency regularization </p></figcaption>
 </figure>
 
