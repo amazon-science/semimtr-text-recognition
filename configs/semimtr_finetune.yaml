@@ -10,22 +10,22 @@ dataset:
   type: ST
   train: {
     roots: [
-        'data/STR-Fewer-Labels/training/label/real',
-        'data/STR-Fewer-Labels/training/unlabel',
+        'data/training/label/real',
+        'data/training/unlabel',
     ],
     batch_size: 232,
     weights: [ 0.3, 0.7 ]
   }
   valid: {
     roots: [
-        'data/STR-Fewer-Labels/validation',
+        'data/validation',
     ],
     batch_size: 232
   }
   test: {
     roots: [
-        'data/STR-Fewer-Labels/evaluation/benchmark',
-        'data/STR-Fewer-Labels/evaluation/addition',
+        'data/evaluation/benchmark',
+        'data/evaluation/addition',
     ],
     batch_size: 232
   }
@@ -59,7 +59,7 @@ model:
   name: 'semimtr.modules.model_fusion_consistency_regularization.ConsistencyRegularizationFusionModel'
   iter_size: 3
   vision: {
-    checkpoint: workdir/seqclr-pretrain-vision-model/best-seqclr-pretrain-vision-model.pth,
+    checkpoint: workdir/semimtr_vision_model_real_l_and_u.pth,
     loss_weight: 1.,
     attention: 'position',
     backbone: 'transformer',
@@ -67,7 +67,7 @@ model:
     checkpoint_submodule: vision,
   }
   language: {
-    checkpoint: workdir/pretrain-language-model/pretrain-language-model.pth,
+    checkpoint: workdir/abinet_language_model.pth,
     num_layers: 4,
     loss_weight: 1.,
     detach: True,

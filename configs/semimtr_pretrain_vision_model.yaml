@@ -10,22 +10,22 @@ dataset:
   type: ST
   train: {
     roots: [
-        'data/STR-Fewer-Labels/training/label/real',
-        'data/STR-Fewer-Labels/training/unlabel',
+        'data/training/label/real',
+        'data/training/unlabel',
     ],
     weights: [ 0.3, 0.7 ],
     batch_size: 304,
   }
   valid: {
     roots: [
-        'data/STR-Fewer-Labels/validation',
+        'data/validation',
     ],
     batch_size: 304
   }
   test: {
     roots: [
-        'data/STR-Fewer-Labels/evaluation/benchmark',
-        'data/STR-Fewer-Labels/evaluation/addition',
+        'data/evaluation/benchmark',
+        'data/evaluation/addition',
     ],
     batch_size: 304
   }
