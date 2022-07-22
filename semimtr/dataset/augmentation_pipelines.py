@@ -5,8 +5,9 @@ def get_augmentation_pipeline(augmentation_severity=1):
     """
     Defining the augmentation pipeline for SemiMTR pre-training and fine-tuning.
     :param augmentation_severity:
-        a. 0 - ABINet augmentation pipeline
-        b. 1 - SemiMTR augmentation pipeline
+        0 - ABINet augmentation pipeline
+        1 - SemiMTR augmentation pipeline
+        2 - SeqCLR augmentation pipeline
     :return: augmentation_pipeline
     """
     if augmentation_severity == 1:
@@ -39,6 +40,18 @@ def get_augmentation_pipeline(augmentation_severity=1):
                 iaa.MultiplyElementwise((0.5, 1.5))
             ])
         ])
+    elif augmentation_severity == 2:
+        optional_augmentations_list = [
+            iaa.LinearContrast((0.5, 1.0)),
+            iaa.GaussianBlur((0.5, 1.5)),
+            iaa.Crop(percent=((0, 0.4), (0, 0), (0, 0.4), (0, 0.0)), keep_size=True),
+            iaa.Crop(percent=((0, 0.0), (0, 0.02), (0, 0), (0, 0.02)), keep_size=True),
+            iaa.Sharpen(alpha=(0.0, 0.5), lightness=(0.0, 0.5)),
+            # iaa.PiecewiseAffine(scale=(0.02, 0.03), mode='edge'), # In SeqCLR but replaced with a faster aug
+            iaa.ElasticTransformation(alpha=(0, 0.8), sigma=0.25),
+            iaa.PerspectiveTransform(scale=(0.01, 0.02)),
+        ]
+        augmentations = iaa.SomeOf((1, None), optional_augmentations_list, random_order=True)
     else:
         raise NotImplementedError(f'augmentation_severity={augmentation_severity} is not supported')
 
