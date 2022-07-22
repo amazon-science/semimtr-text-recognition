@@ -69,6 +69,14 @@ Pretrained language model:
 
 - [ABINet Language Model](https://awscv-public-data.s3.us-west-2.amazonaws.com/semimtr/abinet_language_model.pth)
 
+
+For fine-tuning SemiMTR without vision and language pretraining, locate the above models in a `workdir` directory, as follows:
+
+    workdir
+    ├── semimtr_vision_model_real_l_and_u.pth
+    ├── abinet_language_model.pth
+    └── semimtr_real_l_and_u.pth
+
 ### SemiMTR Models Accuracy
 
 |Training Data|IIIT|SVT|IC13|IC15|SVTP|CUTE|Avg.|COCO|RCTW|Uber|ArT|LSVT|MLT19|ReCTS|Avg.|
@@ -156,7 +164,7 @@ Pretrained language model:
     ```
     CUDA_VISIBLE_DEVICES=0,1,2,3 python main.py --config configs/pretrain_language_model.yaml
     ```
-3. Train ABINet
+3. Train SemiMTR
     ```
     CUDA_VISIBLE_DEVICES=0,1,2,3 python main.py --config configs/semimtr_finetune.yaml
     ```
@@ -174,11 +182,11 @@ Note:
     ```
 2. Pre-train language model
     ```
-    CUDA_VISIBLE_DEVICES=0,1,2,3 python main.py --config=configs/pretrain_language_model.yaml
+    CUDA_VISIBLE_DEVICES=0,1,2,3 python main.py --config configs/pretrain_language_model.yaml
     ```
 3. Train ABINet
     ```
-    CUDA_VISIBLE_DEVICES=0,1,2,3 python main.py --config=configs/abinet_finetune.yaml
+    CUDA_VISIBLE_DEVICES=0,1,2,3 python main.py --config configs/abinet_finetune.yaml
     ```
 
 ## Evaluation
