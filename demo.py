@@ -10,7 +10,6 @@ import torch
 import torch.nn.functional as F
 import tqdm
 from semimtr.utils.utils import Config, Logger, CharsetMapper
-from semimtr.callbacks.callbacks import TextAccuracy
 from torchvision import transforms
 
 
@@ -34,8 +33,18 @@ def preprocess(img, width, height):
 
 
 def postprocess(raw_output, charset, model_eval):
+    def _extract_output_list(last_output):
+        if isinstance(last_output, (tuple, list)):
+            return last_output
+        elif isinstance(last_output, dict) and 'supervised_outputs_view0' in last_output:
+            return last_output['supervised_outputs_view0']
+        elif isinstance(last_output, dict) and 'teacher_outputs' in last_output:
+            return last_output['teacher_outputs']
+        else:
+            return
+
     def _get_output(last_output, model_eval):
-        output_list = TextAccuracy._extract_output_list(last_output)
+        output_list = _extract_output_list(last_output)
         if output_list is not None:
             if isinstance(output_list, (tuple, list)):
                 for res in output_list:
