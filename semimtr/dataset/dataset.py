@@ -242,13 +242,6 @@ class TextDataset(Dataset):
         label_y = tensor(label_y)
         if self.one_hot_y: label_y = onehot(label_y, self.charset.num_classes)
         y = [label_y, length_y]
-
-        '''
-        # For debugging - in debug mode, breakpoint in 'a = 1' to verify that contains symbols in english
-        if x[0][:, 37:].sum() > 0:
-            a = 1
-        '''
-
         return x, y
 
     def prob_smooth_label(self, one_hot):
