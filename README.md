@@ -1,7 +1,8 @@
 # Multimodal Semi-Supervised Learning for Text Recognition
 
-The official code implementation of SemiMTR [Paper](https://arxiv.org/pdf/2205.03873)
-| [Pretrained Models](#Pretrained-Models) | [Citation](#citation) | [Demo](#demo).
+The official code implementation of SemiMTR [Paper](https://arxiv.org/pdf/2205.03873) 
+| [Pretrained Models](#Pretrained-Models) | [SeqCLR Paper](https://arxiv.org/pdf/2012.10873)
+|  [Citation](#citation) | [Demo](#demo).
 
 **[Aviad Aberdam](https://sites.google.com/view/aviad-aberdam/home),
 [Roy Ganz](https://il.linkedin.com/in/roy-ganz-270592),
@@ -92,67 +93,7 @@ For fine-tuning SemiMTR without vision and language pretraining, locate the abov
 - Download preprocessed lmdb dataset for training and
   evaluation.  [Link](https://github.com/ku21fan/STR-Fewer-Labels/blob/main/data.md#download-preprocessed-lmdb-dataset-for-traininig-and-evaluation)
 - For training the language model, download WikiText103. [Link](https://github.com/FangShancheng/ABINet#datasets)
-- The structure of `data` directory is
-    ```
-    data
-    ├── charset_36.txt
-    ├── training
-    │   ├── label
-    │   │   ├── real
-    │   │   │   ├── 1.SVT
-    │   │   │   ├── 2.IIIT
-    │   │   │   ├── 3.IC13
-    │   │   │   ├── 4.IC15
-    │   │   │   ├── 5.COCO
-    │   │   │   ├── 6.RCTW17
-    │   │   │   ├── 7.Uber
-    │   │   │   ├── 8.ArT
-    │   │   │   ├── 9.LSVT
-    │   │   │   ├── 10.MLT19
-    │   │   │   └── 11.ReCTS
-    │   │   └── synth (for synthetic data, follow guideline at https://github.com/ku21fan/STR-Fewer-Labels/blob/main/data.md)
-    │   │       ├── MJ
-    │   │       │   ├── MJ_train
-    │   │       │   ├── MJ_valid
-    │   │       │   └── MJ_test
-    │   │       ├── ST
-    │   │       ├── ST_spe
-    │   │       └── SA
-    │   └── unlabel
-    │       ├── U1.Book32
-    │       ├── U2.TextVQA
-    │       └── U3.STVQA
-    ├── validation
-    │   ├── 1.SVT
-    │   ├── 2.IIIT
-    │   ├── 3.IC13
-    │   ├── 4.IC15
-    │   ├── 5.COCO
-    │   ├── 6.RCTW17
-    │   ├── 7.Uber
-    │   ├── 8.ArT
-    │   ├── 9.LSVT
-    │   ├── 10.MLT19
-    │   └── 11.ReCTS
-    ├── evaluation
-    │   ├── benchmark
-    │   │   ├── SVT
-    │   │   ├── IIIT5k_3000
-    │   │   ├── IC13_1015
-    │   │   ├── IC15_2077
-    │   │   ├── SVTP
-    │   │   └── CUTE80
-    │   └── addition
-    │       ├── 5.COCO
-    │       ├── 6.RCTW17
-    │       ├── 7.Uber
-    │       ├── 8.ArT
-    │       ├── 9.LSVT
-    │       ├── 10.MLT19
-    │       └── 11.ReCTS 
-    ├── WikiText-103.csv (for training LM)
-    └── WikiText-103_eval_d1.csv (for training LM)
-    ```
+- The final structure of `data` directory can be found in [`DATA.md`](data/DATA.md).
 
 ## Training
 
@@ -224,7 +165,7 @@ If you find our method useful for your research, please cite
 
 ## Acknowledgements
 
-This implementation has been based on the repository [ABINet](https://github.com/FangShancheng/ABINet).
+This implementation is based on the repository [ABINet](https://github.com/FangShancheng/ABINet).
 
 ## Security
 
