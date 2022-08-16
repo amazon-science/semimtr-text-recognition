@@ -1,8 +1,7 @@
-from fastai.vision import *
-
 from semimtr.modules.model_vision import BaseVision
 from semimtr.modules.model import Model
 from semimtr.modules.seqclr_proj import SeqCLRProj
+from semimtr.utils.utils import if_none
 
 
 class SeqCLRModel(Model):
@@ -10,7 +9,7 @@ class SeqCLRModel(Model):
         super().__init__(config)
         self.vision = BaseVision(config)
         self.seqclr_proj = SeqCLRProj(config)
-        self.loss_weight = ifnone(config.model_contrastive_loss_weight, 1.0)
+        self.loss_weight = if_none(config.model_contrastive_loss_weight, 1.0)
 
     def forward(self, images, *args, **kwargs):
         v_res_view0 = self.vision(images[:, 0])

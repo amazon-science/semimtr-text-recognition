@@ -14,7 +14,7 @@ from semimtr.losses.losses import MultiCELosses
 from semimtr.losses.seqclr_loss import SeqCLRLoss
 from semimtr.losses.consistency_regularization_loss import ConsistencyRegularizationLoss
 from semimtr.utils.utils import Config, Logger, MyDataParallel, \
-    MyConcatDataset
+    MyConcatDataset, if_none
 from semimtr.utils.test import test_on_each_ds
 
 
@@ -97,12 +97,12 @@ def _get_databaunch(config):
         dataset_class = ImageDatasetSelfSupervised
         if config.dataset_augmentation_severity is not None:
             ds_kwargs['augmentation_severity'] = config.dataset_augmentation_severity
-        ds_kwargs['supervised_flag'] = ifnone(config.model_contrastive_supervised_flag, False)
+        ds_kwargs['supervised_flag'] = if_none(config.model_contrastive_supervised_flag, False)
     elif config.dataset_scheme == 'consistency_regularization':
         dataset_class = ImageDatasetConsistencyRegularization
         if config.dataset_augmentation_severity is not None:
             ds_kwargs['augmentation_severity'] = config.dataset_augmentation_severity
-        ds_kwargs['supervised_flag'] = ifnone(config.model_consistency_regularization_supervised_flag, True)
+        ds_kwargs['supervised_flag'] = if_none(config.model_consistency_regularization_supervised_flag, True)
     else:
         raise NotImplementedError(f'dataset_scheme={config.dataset_scheme} is not supported')
     train_ds = _get_dataset(dataset_class, config.dataset_train_roots, True, config, **ds_kwargs)
@@ -148,7 +148,7 @@ def _get_model(config):
 def _get_learner(config, data, model):
     if config.global_stage == 'pretrain-language':
         metrics = [TopKTextAccuracy(
-            k=ifnone(config.model_k, 5),
+            k=if_none(config.model_k, 5),
             charset_path=config.dataset_charset_path,
             max_length=config.dataset_max_length + 1,
             case_sensitive=config.dataset_eval_case_sensitive,

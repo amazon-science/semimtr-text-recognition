@@ -314,3 +314,8 @@ class MyDataParallel(nn.DataParallel):
 class MyConcatDataset(ConcatDataset):
     def __getattr__(self, k):
         return getattr(self.datasets[0], k)
+
+
+def if_none(a, b):
+    return b if a is None else a
+

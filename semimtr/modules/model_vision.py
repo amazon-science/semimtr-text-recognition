@@ -1,18 +1,18 @@
 import logging
 import torch.nn as nn
-from fastai.vision import *
 
-from semimtr.modules.attention import *
+from semimtr.modules.attention import PositionAttention, Attention
 from semimtr.modules.backbone import ResTranformer
 from semimtr.modules.model import Model
 from semimtr.modules.resnet import resnet45
+from semimtr.utils.utils import if_none
 
 
 class BaseVision(Model):
     def __init__(self, config):
         super().__init__(config)
-        self.loss_weight = ifnone(config.model_vision_loss_weight, 1.0)
-        self.out_channels = ifnone(config.model_vision_d_model, 512)
+        self.loss_weight = if_none(config.model_vision_loss_weight, 1.0)
+        self.out_channels = if_none(config.model_vision_d_model, 512)
 
         if config.model_vision_backbone == 'transformer':
             self.backbone = ResTranformer(config)
@@ -20,7 +20,7 @@ class BaseVision(Model):
             self.backbone = resnet45()
 
         if config.model_vision_attention == 'position':
-            mode = ifnone(config.model_vision_attention_mode, 'nearest')
+            mode = if_none(config.model_vision_attention_mode, 'nearest')
             self.attention = PositionAttention(
                 max_length=config.dataset_max_length + 1,  # additional stop token
                 mode=mode,

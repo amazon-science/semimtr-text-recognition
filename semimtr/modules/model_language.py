@@ -1,29 +1,29 @@
 import logging
 import torch.nn as nn
-from fastai.vision import *
 
 from semimtr.modules.model import _default_tfmer_cfg
 from semimtr.modules.model import Model
 from semimtr.modules.transformer import (PositionalEncoding,
                                          TransformerDecoder,
                                          TransformerDecoderLayer)
+from semimtr.utils.utils import if_none
 
 
 class BCNLanguage(Model):
     def __init__(self, config):
         super().__init__(config)
-        d_model = ifnone(config.model_language_d_model, _default_tfmer_cfg['d_model'])
-        nhead = ifnone(config.model_language_nhead, _default_tfmer_cfg['nhead'])
-        d_inner = ifnone(config.model_language_d_inner, _default_tfmer_cfg['d_inner'])
-        dropout = ifnone(config.model_language_dropout, _default_tfmer_cfg['dropout'])
-        activation = ifnone(config.model_language_activation, _default_tfmer_cfg['activation'])
-        num_layers = ifnone(config.model_language_num_layers, 4)
+        d_model = if_none(config.model_language_d_model, _default_tfmer_cfg['d_model'])
+        nhead = if_none(config.model_language_nhead, _default_tfmer_cfg['nhead'])
+        d_inner = if_none(config.model_language_d_inner, _default_tfmer_cfg['d_inner'])
+        dropout = if_none(config.model_language_dropout, _default_tfmer_cfg['dropout'])
+        activation = if_none(config.model_language_activation, _default_tfmer_cfg['activation'])
+        num_layers = if_none(config.model_language_num_layers, 4)
         self.d_model = d_model
-        self.detach = ifnone(config.model_language_detach, True)
-        self.use_self_attn = ifnone(config.model_language_use_self_attn, False)
-        self.loss_weight = ifnone(config.model_language_loss_weight, 1.0)
+        self.detach = if_none(config.model_language_detach, True)
+        self.use_self_attn = if_none(config.model_language_use_self_attn, False)
+        self.loss_weight = if_none(config.model_language_loss_weight, 1.0)
         self.max_length = config.dataset_max_length + 1  # additional stop token
-        self.debug = ifnone(config.global_debug, False)
+        self.debug = if_none(config.global_debug, False)
 
         self.proj = nn.Linear(self.charset.num_classes, d_model, False)
         self.token_encoder = PositionalEncoding(d_model, max_len=self.max_length)

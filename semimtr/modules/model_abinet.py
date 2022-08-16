@@ -1,18 +1,18 @@
 import torch
 import torch.nn as nn
-from fastai.vision import *
 
 from semimtr.modules.model_vision import BaseVision
 from semimtr.modules.model_language import BCNLanguage
 from semimtr.modules.model_alignment import BaseAlignment
+from semimtr.utils.utils import if_none
 
 
 class ABINetModel(nn.Module):
     def __init__(self, config):
         super().__init__()
-        self.use_alignment = ifnone(config.model_use_alignment, True)
+        self.use_alignment = if_none(config.model_use_alignment, True)
         self.max_length = config.dataset_max_length + 1  # additional stop token
-        # self.vision_no_grad = ifnone(config.model_vision_no_grad, False)
+        # self.vision_no_grad = if_none(config.model_vision_no_grad, False)
         self.vision = BaseVision(config)
         self.language = BCNLanguage(config)
         if self.use_alignment: self.alignment = BaseAlignment(config)

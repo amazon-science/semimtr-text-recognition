@@ -1,16 +1,16 @@
 import torch
 import torch.nn as nn
-from fastai.vision import *
 
 from semimtr.modules.model_vision import BaseVision
 from semimtr.modules.model_language import BCNLanguage
 from semimtr.modules.model_alignment import BaseAlignment
+from semimtr.utils.utils import if_none
 
 
 class ABINetIterModel(nn.Module):
     def __init__(self, config):
         super().__init__()
-        self.iter_size = ifnone(config.model_iter_size, 1)
+        self.iter_size = if_none(config.model_iter_size, 1)
         self.max_length = config.dataset_max_length + 1  # additional stop token
         self.vision = BaseVision(config)
         self.language = BCNLanguage(config)

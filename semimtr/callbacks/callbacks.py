@@ -1,12 +1,12 @@
 import logging
 
 import editdistance as ed
-import torchvision.utils as vutils
 from semimtr.utils.utils import CharsetMapper, Timer, blend_mask
-from fastai.callbacks.tensorboard import (LearnerTensorboardWriter)
+from fastai.callbacks.tensorboard import LearnerTensorboardWriter
 from fastai.vision import *
 from torch.nn.parallel import DistributedDataParallel
-from torchvision import transforms
+
+from semimtr.utils.utils import if_none
 
 
 class IterationCallback(LearnerTensorboardWriter):
@@ -54,9 +54,9 @@ class IterationCallback(LearnerTensorboardWriter):
 
     def _validate(self, dl=None, callbacks=None, metrics=None, keeped_items=False):
         "Validate on `dl` with potential `callbacks` and `metrics`."
-        dl = ifnone(dl, self.learn.data.valid_dl)
-        metrics = ifnone(metrics, self.learn.metrics)
-        cb_handler = CallbackHandler(ifnone(callbacks, []), metrics)
+        dl = if_none(dl, self.learn.data.valid_dl)
+        metrics = if_none(metrics, self.learn.metrics)
+        cb_handler = CallbackHandler(if_none(callbacks, []), metrics)
         cb_handler.on_train_begin(1, None, metrics);
         cb_handler.on_epoch_begin()
         if keeped_items: cb_handler.state_dict.update(dict(keeped_items=[]))

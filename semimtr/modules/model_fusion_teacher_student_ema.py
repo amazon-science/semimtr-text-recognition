@@ -1,7 +1,8 @@
-from fastai.vision import *
+import torch
 import torch.nn as nn
 
 from semimtr.modules.model_abinet_iter import ABINetIterModel
+from semimtr.utils.utils import if_none
 
 
 class TeacherStudentFusionEMA(nn.Module):
@@ -10,8 +11,8 @@ class TeacherStudentFusionEMA(nn.Module):
         self.student = ABINetIterModel(config)
         self.teacher = ABINetIterModel(config)
         self.teacher.load_state_dict(self.student.state_dict())
-        self.loss_weight = ifnone(config.model_teacher_student_loss_weight, 1.0)
-        self.decay = ifnone(config.model_teacher_student_ema_decay, 0.9999)
+        self.loss_weight = if_none(config.model_teacher_student_loss_weight, 1.0)
+        self.decay = if_none(config.model_teacher_student_ema_decay, 0.9999)
 
     def update_teacher(self):
         with torch.no_grad():

@@ -1,16 +1,16 @@
 import torch
 import torch.nn as nn
-from fastai.vision import *
 
 from semimtr.modules.model import Model, _default_tfmer_cfg
+from semimtr.utils.utils import if_none
 
 
 class BaseAlignment(Model):
     def __init__(self, config):
         super().__init__(config)
-        d_model = ifnone(config.model_alignment_d_model, _default_tfmer_cfg['d_model'])
+        d_model = if_none(config.model_alignment_d_model, _default_tfmer_cfg['d_model'])
 
-        self.loss_weight = ifnone(config.model_alignment_loss_weight, 1.0)
+        self.loss_weight = if_none(config.model_alignment_loss_weight, 1.0)
         self.max_length = config.dataset_max_length + 1  # additional stop token
         self.w_att = nn.Linear(2 * d_model, d_model)
         self.cls = nn.Linear(d_model, self.charset.num_classes)

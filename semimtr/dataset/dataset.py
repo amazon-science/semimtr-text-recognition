@@ -1,12 +1,20 @@
 import logging
+import random
+import math
+import warnings
+import PIL
+from pathlib import Path
+from typing import Union
+import numpy as np
 import re
-
 import cv2
 import lmdb
 import six
-from fastai.vision import *
+import pandas as pd
+import torch
 from torchvision import transforms
 from torch.utils.data.dataloader import default_collate
+from torch.utils.data import Dataset
 
 from semimtr.utils.transforms import CVColorJitter, CVDeterioration, CVGeometry
 from semimtr.utils.utils import CharsetMapper, onehot
@@ -16,7 +24,7 @@ class ImageDataset(Dataset):
     "`ImageDataset` read data from LMDB database."
 
     def __init__(self,
-                 path: PathOrStr,
+                 path: Union[Path, str],
                  is_training: bool = True,
                  img_h: int = 32,
                  img_w: int = 100,
@@ -176,9 +184,9 @@ class ImageDataset(Dataset):
     def _postprocessing(self, image, text, idx):
         if self.return_raw: return image, text
 
-        length = tensor(len(text) + 1).to(dtype=torch.long)  # one for end token
+        length = torch.tensor(len(text) + 1).to(dtype=torch.long)  # one for end token
         label = self.charset.get_labels(text, case_sensitive=self.case_sensitive)
-        label = tensor(label).to(dtype=torch.long)
+        label = torch.tensor(label).to(dtype=torch.long)
         if self.one_hot_y: label = onehot(label, self.charset.num_classes)
 
         if self.return_idx:
@@ -190,7 +198,7 @@ class ImageDataset(Dataset):
 
 class TextDataset(Dataset):
     def __init__(self,
-                 path: PathOrStr,
+                 path: Union[Path, str],
                  delimiter: str = '\t',
                  max_length: int = 25,
                  charset_path: str = 'data/charset_36.txt',
@@ -225,9 +233,9 @@ class TextDataset(Dataset):
         text_x = re.sub(f'[^{self.charset_string}]', '', text_x)
         if self.is_training and self.use_sm: text_x = self.sm(text_x)
 
-        length_x = tensor(len(text_x) + 1).to(dtype=torch.long)  # one for end token
+        length_x = torch.tensor(len(text_x) + 1).to(dtype=torch.long)  # one for end token
         label_x = self.charset.get_labels(text_x, case_sensitive=self.case_sensitive)
-        label_x = tensor(label_x)
+        label_x = torch.tensor(label_x)
         if self.one_hot_x:
             label_x = onehot(label_x, self.charset.num_classes)
             if self.is_training and self.smooth_label:
@@ -237,9 +245,9 @@ class TextDataset(Dataset):
         text_y = self.df.iloc[idx, self.gt_col]
         if not self.case_sensitive: text_y = text_y.lower()
         text_y = re.sub(f'[^{self.charset_string}]', '', text_y)
-        length_y = tensor(len(text_y) + 1).to(dtype=torch.long)  # one for end token
+        length_y = torch.tensor(len(text_y) + 1).to(dtype=torch.long)  # one for end token
         label_y = self.charset.get_labels(text_y, case_sensitive=self.case_sensitive)
-        label_y = tensor(label_y)
+        label_y = torch.tensor(label_y)
         if self.one_hot_y: label_y = onehot(label_y, self.charset.num_classes)
         y = [label_y, length_y]
         return x, y

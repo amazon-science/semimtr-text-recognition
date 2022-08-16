@@ -1,16 +1,16 @@
 import logging
 import torch.nn as nn
-from fastai.vision import *
 
 from semimtr.modules.model import Model, _default_tfmer_cfg
 from semimtr.modules.projections import BidirectionalLSTM, AttnLinear
+from semimtr.utils.utils import if_none
 
 
 class SeqCLRProj(Model):
     def __init__(self, config):
         super().__init__(config)
-        vision_d_model = ifnone(config.model_vision_d_model, _default_tfmer_cfg['d_model'])
-        self.working_layer = ifnone(config.model_proj_layer, 'feature')
+        vision_d_model = if_none(config.model_vision_d_model, _default_tfmer_cfg['d_model'])
+        self.working_layer = if_none(config.model_proj_layer, 'feature')
         if self.working_layer in ['feature', 'backbone_feature', 'alignment_feature']:
             projection_input_size = vision_d_model
         else:
@@ -20,17 +20,17 @@ class SeqCLRProj(Model):
             self.projection = nn.Identity()
             projection_output_size = projection_input_size
         elif config.model_proj_scheme == 'bilstm':
-            projection_hidden_size = ifnone(config.model_proj_hidden, projection_input_size)
-            projection_output_size = ifnone(config.model_proj_output, projection_input_size)
+            projection_hidden_size = if_none(config.model_proj_hidden, projection_input_size)
+            projection_output_size = if_none(config.model_proj_output, projection_input_size)
             self.projection = BidirectionalLSTM(projection_input_size,
                                                 projection_hidden_size,
                                                 projection_output_size)
         elif config.model_proj_scheme == 'linear_per_column':
-            projection_output_size = ifnone(config.model_proj_output, projection_input_size)
+            projection_output_size = if_none(config.model_proj_output, projection_input_size)
             self.projection = nn.Linear(projection_input_size, projection_output_size)
         elif config.model_proj_scheme == 'attn_linear_per_column':
-            projection_hidden_size = ifnone(config.model_proj_hidden, projection_input_size // 2)
-            projection_output_size = ifnone(config.model_proj_output, self.charset.num_classes)
+            projection_hidden_size = if_none(config.model_proj_hidden, projection_input_size // 2)
+            projection_output_size = if_none(config.model_proj_output, self.charset.num_classes)
             self.projection = AttnLinear(projection_input_size,
                                          projection_hidden_size,
                                          projection_output_size)
@@ -40,8 +40,8 @@ class SeqCLRProj(Model):
         if config.model_instance_mapping_frame_to_instance:
             self.instance_mapping_func = nn.Identity()
         else:
-            instance_mapping_fixed = ifnone(config.model_instance_mapping_fixed, 'instances')
-            w = ifnone(config.model_instance_mapping_w, 5)
+            instance_mapping_fixed = if_none(config.model_instance_mapping_fixed, 'instances')
+            w = if_none(config.model_instance_mapping_w, 5)
             if instance_mapping_fixed == 'instances':
                 self.instance_mapping_func = nn.AdaptiveAvgPool2d((w, projection_output_size))
             elif instance_mapping_fixed == 'frames':

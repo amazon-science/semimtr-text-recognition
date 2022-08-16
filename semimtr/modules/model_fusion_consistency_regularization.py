@@ -1,12 +1,11 @@
-from fastai.vision import *
-
 from semimtr.modules.model_abinet_iter import ABINetIterModel
+from semimtr.utils.utils import if_none
 
 
 class ConsistencyRegularizationFusionModel(ABINetIterModel):
     def __init__(self, config):
         super().__init__(config)
-        self.loss_weight = ifnone(config.model_teacher_student_loss_weight, 1.0)
+        self.loss_weight = if_none(config.model_teacher_student_loss_weight, 1.0)
 
     def forward(self, images, *args, forward_only_teacher=False, **kwargs):
         if forward_only_teacher:
