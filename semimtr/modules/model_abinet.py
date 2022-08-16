@@ -17,7 +17,7 @@ class ABINetModel(nn.Module):
         self.language = BCNLanguage(config)
         if self.use_alignment: self.alignment = BaseAlignment(config)
 
-    def forward(self, images, *args):
+    def forward(self, images, *args, **kwargs):
         v_res = self.vision(images)
         v_tokens = torch.softmax(v_res['logits'], dim=-1)
         v_lengths = v_res['pt_lengths'].clamp_(2, self.max_length)  # TODO:move to langauge model

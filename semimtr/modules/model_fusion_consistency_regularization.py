@@ -8,7 +8,7 @@ class ConsistencyRegularizationFusionModel(ABINetIterModel):
         super().__init__(config)
         self.loss_weight = ifnone(config.model_teacher_student_loss_weight, 1.0)
 
-    def forward(self, images, *args, forward_only_teacher=False):
+    def forward(self, images, *args, forward_only_teacher=False, **kwargs):
         if forward_only_teacher:
             a_res_teacher, l_res_teacher, v_res_teacher = super().forward(images)
             a_res_student, l_res_student, v_res_student = 0, 0, 0

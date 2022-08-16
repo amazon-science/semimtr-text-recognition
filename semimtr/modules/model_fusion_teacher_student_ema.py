@@ -18,7 +18,7 @@ class TeacherStudentFusionEMA(nn.Module):
             for param_student, param_teacher in zip(self.student.parameters(), self.teacher.parameters()):
                 param_teacher.data.mul_(self.decay).add_((1 - self.decay) * param_student.detach().data)
 
-    def forward(self, images, *args):
+    def forward(self, images, *args, **kwargs):
         with torch.no_grad():
             a_res_teacher, l_res_teacher, v_res_teacher = self.teacher(images[:, 0])
         a_res_student, l_res_student, v_res_student = self.student(images[:, 1])

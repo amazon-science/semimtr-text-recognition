@@ -39,7 +39,7 @@ class BaseVision(Model):
             self.load(config.model_vision_checkpoint, submodule=config.model_vision_checkpoint_submodule,
                       exclude=config.model_vision_exclude)
 
-    def forward(self, images, *args):
+    def forward(self, images, *args, **kwargs):
         features = self.backbone(images)  # (N, E, H, W)
         attn_vecs, attn_scores = self.attention(features)  # (N, T, E), (N, T, H, W)
         logits = self.cls(attn_vecs)  # (N, T, C)

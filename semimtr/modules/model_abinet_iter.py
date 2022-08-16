@@ -16,7 +16,7 @@ class ABINetIterModel(nn.Module):
         self.language = BCNLanguage(config)
         self.alignment = BaseAlignment(config)
 
-    def forward(self, images, *args):
+    def forward(self, images, *args, **kwargs):
         v_res = self.vision(images)
         a_res = v_res
         all_l_res, all_a_res = [], []
