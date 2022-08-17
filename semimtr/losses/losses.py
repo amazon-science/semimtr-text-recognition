@@ -56,8 +56,9 @@ class MultiCELosses(nn.Module):
 
         return loss
 
-    def forward(self, outputs, gt_labels, gt_lengths, record=False, mask=None):
+    def forward(self, outputs, gt_dict, record=False, mask=None):
         self.losses = {}
+        gt_labels, gt_lengths = gt_dict['label'], gt_dict['length']
         if isinstance(outputs, (tuple, list)):
             outputs = [self._merge_list(o) for o in outputs]
             return sum([self._ce_loss(o, gt_labels, gt_lengths, mask=mask) for o in outputs if o['loss_weight'] > 0.])

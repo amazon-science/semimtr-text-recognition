@@ -39,20 +39,20 @@ class SeqCLRLoss(nn.Module):
             loss = loss.sum() / n_instances_per_image
         return loss
 
-    def forward(self, outputs, *args):
+    def forward(self, outputs, gt_dict, *args, **kwargs):
         if isinstance(outputs, (tuple, list)):
             raise NotImplementedError
         self.losses = {}
         ce_loss = 0
         if self.supervised_flag:
-            ce_loss += self.supervised_loss(outputs['supervised_outputs_view0'], *args, record=True)
+            ce_loss += self.supervised_loss(outputs['supervised_outputs_view0'], gt_dict, record=True)
             ce_view0_last_losses = self.supervised_loss.last_losses
-            ce_loss += self.supervised_loss(outputs['supervised_outputs_view1'], *args, record=True)
+            ce_loss += self.supervised_loss(outputs['supervised_outputs_view1'], gt_dict, record=True)
             ce_view1_last_losses = self.supervised_loss.last_losses
             self.losses.update({k: (v + ce_view1_last_losses[k]) / 2 for k, v in ce_view0_last_losses.items()})
 
         loss_name = outputs.get('name')
-        gt_lengths = args[1]
+        gt_lengths = gt_dict['length']
         seqclr_loss = 0
         if loss_name == 'seqclr_fusion':
             pt_length = outputs['pt_lengths']

@@ -35,11 +35,8 @@ class ImageDataset(Dataset):
                  charset_path: str = 'data/charset_36.txt',
                  convert_mode: str = 'RGB',
                  data_aug: bool = True,
-                 deteriorate_ratio: float = 0.,
                  multiscales: bool = True,
                  one_hot_y: bool = True,
-                 return_idx: bool = False,
-                 return_raw: bool = False,
                  data_portion: float = 1.0,
                  **kwargs):
         self.path, self.name = Path(path), Path(path).name
@@ -47,7 +44,6 @@ class ImageDataset(Dataset):
         self.convert_mode, self.check_length = convert_mode, check_length
         self.img_h, self.img_w = img_h, img_w
         self.max_length, self.one_hot_y = max_length, one_hot_y
-        self.return_idx, self.return_raw = return_idx, return_raw
         self.case_sensitive, self.is_training = case_sensitive, is_training
         self.filter_single_punctuation = filter_single_punctuation
         self.data_aug, self.multiscales = data_aug, multiscales
@@ -157,7 +153,7 @@ class ImageDataset(Dataset):
                 else:
                     logging.info(f'Corrupted image is found: {self.name}, {idx}')
                 return self._next_image()
-            return image, label, idx
+            return {'image': image, 'label': label, 'idx': idx}
 
     def _process_training(self, image):
         if self.data_aug: image = self.augment_tfs(image)
@@ -165,7 +161,7 @@ class ImageDataset(Dataset):
         return image
 
     def _process_test(self, image):
-        return self.totensor(self.resize(np.array(image)))  # TODO:move is_training to here
+        return self.totensor(self.resize(np.array(image)))
 
     def __getitem__(self, idx):
         if self.use_portion:
@@ -173,27 +169,21 @@ class ImageDataset(Dataset):
         datum = self.get(idx)
         if datum is None:
             return
-        image, text, idx_new = datum
+        image, text, idx_new = datum['image'], datum['label'], datum['idx']
 
         if self.is_training:
             image = self._process_training(image)
         else:
             image = self._process_test(image)
-        return self._postprocessing(image, text, idx_new)
+        y = self._label_postprocessing(text)
+        return image, y
 
-    def _postprocessing(self, image, text, idx):
-        if self.return_raw: return image, text
-
+    def _label_postprocessing(self, text):
         length = torch.tensor(len(text) + 1).to(dtype=torch.long)  # one for end token
         label = self.charset.get_labels(text, case_sensitive=self.case_sensitive)
         label = torch.tensor(label).to(dtype=torch.long)
         if self.one_hot_y: label = onehot(label, self.charset.num_classes)
-
-        if self.return_idx:
-            y = [label, length, idx]
-        else:
-            y = [label, length]
-        return image, y
+        return {'label': label, 'length': length}
 
 
 class TextDataset(Dataset):

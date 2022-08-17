@@ -36,9 +36,8 @@ class ImageDatasetSelfSupervised(ImageDataset):
     def _process_test(self, image):
         return self._process_training(image)
 
-    def _postprocessing(self, image, text, idx):
-        image, y = super()._postprocessing(image, text, idx)
+    def _label_postprocessing(self, text):
+        y = super()._label_postprocessing(text)
         if text.lower() == 'unlabeleddata':
-            length = torch.tensor(0).to(dtype=torch.long)  # don't calculate cross entropy on this image
-            y[1] = length
-        return image, y
+            y['length'] = torch.tensor(0).to(dtype=torch.long)  # don't calculate cross entropy on this image
+        return y

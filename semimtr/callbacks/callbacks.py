@@ -1,5 +1,4 @@
 import logging
-
 import editdistance as ed
 from semimtr.utils.utils import CharsetMapper, Timer, blend_mask
 from fastai.callbacks.tensorboard import LearnerTensorboardWriter
@@ -261,7 +260,7 @@ class TextAccuracy(Callback):
         last_output = self._update_output(last_output, {'pt_text': pt_text, 'pt_scores': pt_scores})
 
         pt_text = [self.charset.trim(t) for t in pt_text]
-        label = last_target[0]
+        label = last_target['label']
         if label.dim() == 3: label = label.argmax(dim=-1)  # one-hot label
         gt_text = [self.charset.get_text(l, trim=True) for l in label]
 
@@ -326,7 +325,7 @@ class TopKTextAccuracy(TextAccuracy):
 
     def on_batch_end(self, last_output, last_target, **kwargs):
         logits, pt_lengths = last_output['logits'], last_output['pt_lengths']
-        gt_labels, gt_lengths = last_target[:]
+        gt_labels, gt_lengths = last_target['label'], last_target['length']
 
         for logit, pt_length, label, length in zip(logits, pt_lengths, gt_labels, gt_lengths):
             word_flag = True
