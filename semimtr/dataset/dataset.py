@@ -124,6 +124,7 @@ class ImageDataset(Dataset):
     def get(self, idx):
         with self.env.begin(write=False) as txn:
             image_key, label_key = f'image-{idx + 1:09d}', f'label-{idx + 1:09d}'
+            exception_flag = False
             try:
                 raw_label = str(txn.get(label_key.encode()), 'utf-8')  # label
                 if not self.case_sensitive: raw_label = raw_label.lower()
@@ -142,17 +143,17 @@ class ImageDataset(Dataset):
                 with warnings.catch_warnings():
                     warnings.simplefilter("ignore", UserWarning)  # EXIF warning from TiffPlugin
                     image = PIL.Image.open(buf).convert(self.convert_mode)
-                if self.is_training and not self._check_image(image):
-                    # logging.info(f'Invalid image is found: {self.name}, {idx}, {label}, {len(label)}')
-                    return self._next_image()
             except:
                 import traceback
                 traceback.print_exc()
+                exception_flag = True
                 if "label" in locals():
                     logging.info(f'Corrupted image is found: {self.name}, {idx}, {label}, {len(label)}')
                 else:
                     logging.info(f'Corrupted image is found: {self.name}, {idx}')
                 return self._next_image()
+            if exception_flag or not self._check_image(image):
+                return self._next_image() if self.is_training else None
             return {'image': image, 'label': label, 'idx': idx}
 
     def _process_training(self, image):
