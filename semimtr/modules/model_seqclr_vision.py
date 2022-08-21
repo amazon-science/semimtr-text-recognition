@@ -12,8 +12,8 @@ class SeqCLRModel(Model):
         self.loss_weight = if_none(config.model_contrastive_loss_weight, 1.0)
 
     def forward(self, images, *args, **kwargs):
-        v_res_view0 = self.vision(images[:, 0])
-        v_res_view1 = self.vision(images[:, 1])
+        v_res_view0 = self.vision(images[:, 0], *args, **kwargs)
+        v_res_view1 = self.vision(images[:, 1], *args, **kwargs)
 
         projected_features_view0 = self.seqclr_proj(v_res_view0)[0]
         projected_features_view1 = self.seqclr_proj(v_res_view1)[0]

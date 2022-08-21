@@ -38,7 +38,7 @@ class BCNLanguage(Model):
             logging.info(f'Read language model from {config.model_language_checkpoint}.')
             self.load(config.model_language_checkpoint)
 
-    def forward(self, tokens, lengths):
+    def forward(self, tokens, lengths, *args, **kwargs):
         """
         Args:
             tokens: (N, T, C) where T is length, N is batch size and C is classes number

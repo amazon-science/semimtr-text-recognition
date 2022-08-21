@@ -21,8 +21,8 @@ class TeacherStudentFusionEMA(nn.Module):
 
     def forward(self, images, *args, **kwargs):
         with torch.no_grad():
-            a_res_teacher, l_res_teacher, v_res_teacher = self.teacher(images[:, 0])
-        a_res_student, l_res_student, v_res_student = self.student(images[:, 1])
+            a_res_teacher, l_res_teacher, v_res_teacher = self.teacher(images[:, 0], *args, **kwargs)
+        a_res_student, l_res_student, v_res_student = self.student(images[:, 1], *args, **kwargs)
 
         return {'teacher_outputs': [a_res_teacher, l_res_teacher, v_res_teacher],
                 'student_outputs': [a_res_student, l_res_student, v_res_student],

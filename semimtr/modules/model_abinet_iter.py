@@ -17,16 +17,16 @@ class ABINetIterModel(nn.Module):
         self.alignment = BaseAlignment(config)
 
     def forward(self, images, *args, **kwargs):
-        v_res = self.vision(images)
+        v_res = self.vision(images, *args, **kwargs)
         a_res = v_res
         all_l_res, all_a_res = [], []
         for _ in range(self.iter_size):
             tokens = torch.softmax(a_res['logits'], dim=-1)
             lengths = a_res['pt_lengths']
             lengths.clamp_(2, self.max_length)  # TODO:move to langauge model
-            l_res = self.language(tokens, lengths)
+            l_res = self.language(tokens, lengths, *args, **kwargs)
             all_l_res.append(l_res)
-            a_res = self.alignment(l_res['feature'], v_res['feature'])
+            a_res = self.alignment(l_res['feature'], v_res['feature'], *args, **kwargs)
             all_a_res.append(a_res)
         if self.training:
             return all_a_res, all_l_res, v_res

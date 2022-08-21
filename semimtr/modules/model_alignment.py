@@ -15,7 +15,7 @@ class BaseAlignment(Model):
         self.w_att = nn.Linear(2 * d_model, d_model)
         self.cls = nn.Linear(d_model, self.charset.num_classes)
 
-    def forward(self, l_feature, v_feature):
+    def forward(self, l_feature, v_feature, *args, **kwargs):
         """
         Args:
             l_feature: (N, T, E) where T is length, N is batch size and d is dim of model
