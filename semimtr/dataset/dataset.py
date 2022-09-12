@@ -240,7 +240,7 @@ class TextDataset(Dataset):
         label_y = self.charset.get_labels(text_y, case_sensitive=self.case_sensitive)
         label_y = torch.tensor(label_y)
         if self.one_hot_y: label_y = onehot(label_y, self.charset.num_classes)
-        y = [label_y, length_y]
+        y = {'label': label_y, 'length': length_y}
         return x, y
 
     def prob_smooth_label(self, one_hot):
