@@ -231,7 +231,7 @@ class TextDataset(Dataset):
             label_x = onehot(label_x, self.charset.num_classes)
             if self.is_training and self.smooth_label:
                 label_x = torch.stack([self.prob_smooth_label(l) for l in label_x])
-        x = [label_x, length_x]
+        x = {'label': label_x, 'length': length_x}
 
         text_y = self.df.iloc[idx, self.gt_col]
         if not self.case_sensitive: text_y = text_y.lower()

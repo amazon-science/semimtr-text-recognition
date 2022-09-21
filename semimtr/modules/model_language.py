@@ -38,12 +38,14 @@ class BCNLanguage(Model):
             logging.info(f'Read language model from {config.model_language_checkpoint}.')
             self.load(config.model_language_checkpoint)
 
-    def forward(self, tokens, lengths, *args, **kwargs):
+    def forward(self, samples, *args, **kwargs):
         """
         Args:
-            tokens: (N, T, C) where T is length, N is batch size and C is classes number
-            lengths: (N,)
+            samples: dict
+                tokens: (N, T, C) where T is length, N is batch size and C is classes number
+                lengths: (N,)
         """
+        tokens, lengths = samples['label'], samples['length']
         if self.detach: tokens = tokens.detach()
         embed = self.proj(tokens)  # (N, T, E)
         embed = embed.permute(1, 0, 2)  # (T, N, E)
