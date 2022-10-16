@@ -22,7 +22,8 @@ class ABINetModel(nn.Module):
         v_tokens = torch.softmax(v_res['logits'], dim=-1)
         v_lengths = v_res['pt_lengths'].clamp_(2, self.max_length)  # TODO:move to langauge model
 
-        l_res = self.language(v_tokens, v_lengths, *args, **kwargs)
+        samples = {'label': v_tokens, 'length': v_lengths}
+        l_res = self.language(samples, *args, **kwargs)
         if not self.use_alignment:
             return l_res, v_res
         l_feature, v_feature = l_res['feature'], v_res['feature']

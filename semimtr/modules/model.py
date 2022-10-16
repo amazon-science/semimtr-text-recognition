@@ -18,11 +18,21 @@ class Model(nn.Module):
 
     def load(self, source, device=None, strict=True, submodule=None, exclude=None):
         state = torch.load(source, map_location=device)
+        if source.endswith('.ckpt'):
+            model_dict = state['state_dict']
+            if list(model_dict.keys())[0].startswith('model.'):
+                model_dict = collections.OrderedDict(
+                    {k[6:]: v for k, v in model_dict.items() if k.startswith('model.')})
+        else:
+            model_dict = state
+            if 'model' in model_dict:
+                model_dict = model_dict['model']
+
         if submodule is None:
-            self.load_state_dict(state['model'], strict=strict)
+            self.load_state_dict(model_dict, strict=strict)
         else:
             submodule_dict = collections.OrderedDict(
-                {k.split('.', 1)[1]: v for k, v in state['model'].items()
+                {k.split('.', 1)[1]: v for k, v in model_dict.items()
                  if k.split('.', 1)[0] == submodule and k.split('.')[1] != exclude}
             )
             stat = self.load_state_dict(submodule_dict, strict=strict and exclude is None)

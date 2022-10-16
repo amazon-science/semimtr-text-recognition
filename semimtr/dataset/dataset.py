@@ -231,7 +231,7 @@ class TextDataset(Dataset):
             label_x = onehot(label_x, self.charset.num_classes)
             if self.is_training and self.smooth_label:
                 label_x = torch.stack([self.prob_smooth_label(l) for l in label_x])
-        x = [label_x, length_x]
+        x = {'label': label_x, 'length': length_x}
 
         text_y = self.df.iloc[idx, self.gt_col]
         if not self.case_sensitive: text_y = text_y.lower()
@@ -240,7 +240,7 @@ class TextDataset(Dataset):
         label_y = self.charset.get_labels(text_y, case_sensitive=self.case_sensitive)
         label_y = torch.tensor(label_y)
         if self.one_hot_y: label_y = onehot(label_y, self.charset.num_classes)
-        y = [label_y, length_y]
+        y = {'label': label_y, 'length': length_y}
         return x, y
 
     def prob_smooth_label(self, one_hot):
