@@ -63,14 +63,16 @@ class ConsistencyRegularizationLoss(nn.Module):
                 student_predictions = outputs['student_outputs'][self.student_layer_ind]
             else:
                 student_predictions = outputs['student_outputs']
-            ce_loss_student_teacher = self.consistency_ce_loss(student_predictions, pt_labels_teacher,
-                                                               pt_lengths_teacher, *args[2:], mask=threshold_mask)
+            pt_teacher = {'label': pt_labels_teacher, 'length': pt_lengths_teacher}
+            ce_loss_student_teacher = self.consistency_ce_loss(student_predictions, pt_teacher, *args[1:],
+                                                               mask=threshold_mask)
         else:
             ce_loss_student_teacher = 0
             for teacher_predictions, student_predictions in zip(outputs['teacher_outputs'], outputs['student_outputs']):
                 pt_labels_teacher, pt_lengths_teacher, threshold_mask = self.create_teacher_labels(teacher_predictions)
-                ce_loss_student_teacher += self.consistency_ce_loss(student_predictions, pt_labels_teacher,
-                                                                    pt_lengths_teacher, *args[2:], mask=threshold_mask)
+                pt_teacher = {'label': pt_labels_teacher, 'length': pt_lengths_teacher}
+                ce_loss_student_teacher += self.consistency_ce_loss(student_predictions, pt_teacher, *args[1:],
+                                                                    mask=threshold_mask)
         self.losses.update({f'{k}_teacher_student': v for k, v in self.consistency_ce_loss.last_losses.items()})
         ce_loss += outputs['loss_weight'] * ce_loss_student_teacher
         return ce_loss
