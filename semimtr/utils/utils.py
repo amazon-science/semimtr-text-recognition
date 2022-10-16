@@ -205,13 +205,13 @@ class Config(object):
 
         assert os.path.exists(config_path), '%s does not exists!' % config_path
         with open(config_path) as file:
-            config_dict = yaml.load(file, Loader=yaml.FullLoader)
+            config_dict = yaml.safe_load(file)
         with open('configs/template.yaml') as file:
-            default_config_dict = yaml.load(file, Loader=yaml.FullLoader)
+            default_config_dict = yaml.safe_load(file)
         __dict2attr(default_config_dict)
         if 'global' in config_dict.keys() and 'experiment_template' in config_dict['global'].keys():
             with open(f"configs/{config_dict['global']['experiment_template']}") as file:
-                default_exp_config_dict = yaml.load(file, Loader=yaml.FullLoader)
+                default_exp_config_dict = yaml.safe_load(file)
             __dict2attr(default_exp_config_dict)
         __dict2attr(config_dict)
         self.global_workdir = os.path.join(self.global_workdir, self.global_name)
@@ -318,4 +318,3 @@ class MyConcatDataset(ConcatDataset):
 
 def if_none(a, b):
     return b if a is None else a
-

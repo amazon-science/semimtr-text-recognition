@@ -118,7 +118,7 @@ class IterationCallback(LearnerTensorboardWriter):
             if not checkpoint_path.exists():
                 open(checkpoint_path, 'w').close()
             with open(checkpoint_path, 'r') as file:
-                checkpoints = yaml.load(file, Loader=yaml.FullLoader) or dict()
+                checkpoints = yaml.safe_load(file) or dict()
             checkpoints['all_checkpoints'] = (
                     checkpoints.get('all_checkpoints') or list())
             checkpoints['all_checkpoints'].insert(0, filename)
