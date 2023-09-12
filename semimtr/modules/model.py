@@ -29,16 +29,16 @@ class Model(nn.Module):
                 model_dict = model_dict['model']
 
         if submodule is None:
-            self.load_state_dict(model_dict, strict=strict)
+            stat = self.load_state_dict(model_dict, strict=strict)
         else:
             submodule_dict = collections.OrderedDict(
                 {k.split('.', 1)[1]: v for k, v in model_dict.items()
                  if k.split('.', 1)[0] == submodule and k.split('.')[1] != exclude}
             )
             stat = self.load_state_dict(submodule_dict, strict=strict and exclude is None)
-            if stat.missing_keys or stat.unexpected_keys:
-                logging.warning(f'Loading model with missing keys: {stat.missing_keys} '
-                                f'and unexpected keys: {stat.unexpected_keys}')
+        if stat.missing_keys or stat.unexpected_keys:
+            logging.warning(f'Loading model with missing keys: {stat.missing_keys}'
+                            f' and unexpected keys: {stat.unexpected_keys}')
 
     def _get_length(self, logit, dim=-1):
         """ Greed decoder to obtain length from logit"""

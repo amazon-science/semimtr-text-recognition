@@ -25,7 +25,7 @@ class ResTranformer(nn.Module):
                                                 dim_feedforward=d_inner, dropout=dropout, activation=activation)
         self.transformer = TransformerEncoder(encoder_layer, num_layers)
 
-    def forward(self, images):
+    def forward(self, images, *args):
         feature = self.resnet(images)
         n, c, h, w = feature.shape
         feature = feature.view(n, c, -1).permute(2, 0, 1)
